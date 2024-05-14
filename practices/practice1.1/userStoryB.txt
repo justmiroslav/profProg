@@ -1,0 +1,7 @@
+User Story: As a cool mathematician I want to be able to get roots of the quadratic equation ax^2 + bx + c. It will allow me to avoid hard calculations related to determinant.
+
+Requirements:
+
+1. User shall be able to input the coefficients a, b and c to build he quadratic equation.
+2. Program shall be able to calculate the determinant, and based on it find how many roots there are and what are the values for each of them.
+3. Program shall be able to return the message with appropriate meaning.
