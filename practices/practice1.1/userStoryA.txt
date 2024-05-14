@@ -1,0 +1,7 @@
+User Story: As a cool programmer guy I want to have an ability to find the biggest negative value from the provided list of numbers. It will allow me to make my manual calculation faster.
+
+Requirements:
+
+1. User shall be able to input a list of numbers.
+2. Program shall be able to iterate through the list of numbers, compare them with each other and find the biggest negative number.
+3. Program shall be able to return the largest negative number found in the list.
