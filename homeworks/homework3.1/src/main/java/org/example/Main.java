@@ -6,7 +6,7 @@ import java.util.List;
 public class Main {
     public static void main( String[] args ) {
         if (args.length != 3) {
-            System.out.println("Usage: java -cp src Main <x> <y> <z>");
+            System.out.println("Usage: java -cp ./src/main/java org.example.Main <x> <y> <z>");
             System.exit(1);
         }
         try {
