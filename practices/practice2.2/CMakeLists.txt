@@ -4,4 +4,7 @@ project(practice2_2)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(practice2_2 main.cpp
-        include/colorsMap.hpp)
+        include/ColorsMap.hpp
+        include/ImageProcessor.hpp
+        src/ImageProcessor.cpp
+        src/ColorsMap.cpp)

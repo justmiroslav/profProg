@@ -3,23 +3,23 @@ $executable = "./program.exe"
 # Each hashtable contains 'input' and 'expectedOutput'
 $testCases = @(
     @{
-        'input' = @("image.txt", "blue")
+        'input' = @("data/image.txt", "blue")
         'expectedOutput' = "Usage: ./program.exe <input_filename> <output_filename> <color_name>"
     },
     @{
-        'input' = @("image.txt", "output.txt", "nonExistentColor")
+        'input' = @("data/image.txt", "data/output.txt", "nonExistentColor")
         'expectedOutput' = "Color not found"
     },
     @{
-        'input' = @("nonExistentFile.txt", "output.txt", "red")
-        'expectedOutput' = "Error opening file nonExistentFile.txt"
+        'input' = @("data/nonExistentFile.txt", "data/output.txt", "red")
+        'expectedOutput' = "Error opening file data/nonExistentFile.txt"
     },
     @{
-        'input' = @("invalidLinesAmount.txt", "output.txt", "red")
+        'input' = @("data/invalidLinesAmount.txt", "data/output.txt", "red")
         'expectedOutput' = "Invalid amount of lines in file"
     },
     @{
-        'input' = @("image.txt", "output.txt", "blue")
+        'input' = @("data/image.txt", "data/output.txt", "blue")
         'expectedOutput' = "Favorite color has been successfully expanded"
     }
 )

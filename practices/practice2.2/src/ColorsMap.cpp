@@ -1,11 +1,4 @@
-#pragma once
-#include <map>
-#include <tuple>
-#include <string>
-
-struct Color {
-    int r, g, b;
-};
+#include "../include/ColorsMap.hpp"
 
 std::map<std::string, std::tuple<int, int, int>> colorsRgb = {
         {"light_green", std::make_tuple(123, 234, 45)},
