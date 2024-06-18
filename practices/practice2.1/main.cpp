@@ -1,5 +1,4 @@
 #include "include/UserHistory.hpp"
-#include <print>
 
 namespace {
     constexpr std::string_view RESET_ALL_COMMAND = "bread";
