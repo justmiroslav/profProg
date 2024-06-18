@@ -1,65 +1,40 @@
-#include <iostream>
-#include <unordered_map>
-#include <string>
-#include <fstream>
+#include "include/UserHistory.hpp"
+#include <print>
 
-std::unordered_map<std::string, int> userCount;
-
-void loadHistory() {
-    std::ifstream in("data/history.txt");
-    std::string name;
-    int count;
-    while (in >> name >> count) {
-        userCount[name] = count;
-    }
-}
-
-void saveHistory() {
-    std::ofstream out("data/history.txt");
-    for (const auto& pair : userCount) {
-        out << pair.first << " " << pair.second << "\n";
-    }
-}
-
-void resetUser(const std::string& name) {
-    userCount.erase(name);
-    saveHistory();
-}
-
-void resetAllUsers() {
-    userCount.clear();
-    saveHistory();
-}
-
-void greetUser(const std::string& name) {
-    if (userCount.find(name) == userCount.end()) {
-        std::cout << "Welcome, " << name << "!\n";
-    } else {
-        std::cout << "Hello again(x" << userCount[name] << "), " << name << "\n";
-    }
-    userCount[name]++;
-    saveHistory();
+namespace {
+    constexpr std::string_view RESET_ALL_COMMAND = "bread";
+    constexpr std::string_view DELETE_COMMAND = "delete";
 }
 
 int main(int argc, char* argv[]) {
+
     if (argc < 2 || argc > 3) {
-        std::cout << "Error: Incorrect number of arguments.\n";
+        std::println("Usage: ./program.exe <name> [delete]");
         return 1;
     }
 
-    loadHistory();
+    bool isDelete = argc == 3 && std::string(argv[2]) == DELETE_COMMAND;
+    if (!isDelete && argc == 3) {
+        std::println("Unknown command: {}", argv[2]);
+        return 1;
+    }
+
+    UserHistory userHistory("data/history.txt");
+    userHistory.loadHistory();
     std::string name = argv[1];
 
-    if (name == "bread") {
-        resetAllUsers();
-        return 0;
+    if (name == RESET_ALL_COMMAND) {
+        userHistory.resetAllUsers();
+    } else if (isDelete) {
+        userHistory.resetUser(name);
+    } else {
+        int count = userHistory.incrementFor(name);
+        if (count == 1) {
+            std::println("Welcome, {}!", name);
+        } else {
+            std::println("Hello again(x{}), {}", count - 1, name);
+        }
     }
 
-    if (argc == 3 && std::string(argv[2]) == "delete") {
-        resetUser(name);
-        return 0;
-    }
-
-    greetUser(name);
     return 0;
 }

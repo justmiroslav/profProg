@@ -20,7 +20,7 @@ $testCases = @(
     },
     @{
         'input' = @()
-        'expectedOutput' = "Error: Incorrect number of arguments."
+        'expectedOutput' = "Usage: ./program.exe <name> [delete]"
     }
 )
 

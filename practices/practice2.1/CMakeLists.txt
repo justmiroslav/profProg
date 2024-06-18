@@ -3,4 +3,6 @@ project(practice2_1)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(practice2_1 main.cpp)
+add_executable(practice2_1 main.cpp
+        include/UserHistory.hpp
+        src/UserHistory.cpp)
