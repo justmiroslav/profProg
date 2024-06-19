@@ -5,6 +5,9 @@ struct RGB {
     double r;
     double g;
     double b;
+
+    RGB(double r, double g, double b);
+    [[nodiscard]] RGB generateMagicColor() const;
 };
 
 class Triangle {
@@ -15,5 +18,3 @@ public:
 private:
     double a, b, c;
 };
-
-RGB generateMagicColor(double r, double g, double b);
