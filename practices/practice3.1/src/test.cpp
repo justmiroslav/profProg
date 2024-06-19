@@ -25,7 +25,7 @@ int main() {
         auto result = dummyFunc(value);
 
         // Check:
-        ASSERT_NEQ(result, 0.0)
+        ASSERT_EQ(result, 4.0)
     });
 
     testSuite.addTest("Dummy_test3",
@@ -76,7 +76,7 @@ int main() {
         auto result = repeatStrFunc(values, str);
 
         // Check:
-        ASSERT_EQ(result, "Negative value")
+        ASSERT_EQ(result, "")
     });
 
     testSuite.addTest("RepeatStr_test4",
@@ -89,7 +89,7 @@ int main() {
         auto result = repeatStrFunc(values, str);
 
         // Check:
-        ASSERT_EQ(result, "Empty vector")
+        ASSERT_EQ(result, "")
     });
 
     testSuite.addTest("RepeatStr_test5",

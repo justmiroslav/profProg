@@ -1,22 +1,23 @@
 #pragma once
+
 #include <vector>
 #include <functional>
 #include <string>
-#include <iostream>
+#include <print>
 #include <cassert>
 #include <source_location>
 
 #define ASSERT_EQ(leftValue, rightValue) \
     if ( leftValue != rightValue ) { \
         auto location = std::source_location::current(); \
-        std::cout << "Assert failed: " << leftValue << " is not equal to " << rightValue << " at " << location.file_name() << ":" << location.line(); \
+        std::println("Assert failed: {}(which is equal to {}) is not equal to {} at {}:{}", #leftValue, leftValue, #rightValue, location.file_name(), location.line()); \
         throw std::invalid_argument("Assertion failed"); \
     }
 
 #define ASSERT_NEQ(leftValue, rightValue) \
     if ( leftValue == rightValue ) { \
         auto location = std::source_location::current(); \
-        std::cout << "Assert failed: " << leftValue << " is equal to " << rightValue << " at " << location.file_name() << ":" << location.line(); \
+        std::println("Assert failed: {} is equal to {} at {}:{}", #leftValue, #rightValue, location.file_name(), location.line()); \
         throw std::invalid_argument("Assertion failed"); \
     }
 
@@ -38,19 +39,18 @@ public:
 
         for (auto& [name, testFunc] : tests) {
             if (testFunc) {
-                std::cout << "Executing test " << name << "..." << std::endl;
+                std::println("Executing test {}...", name);
                 totalCount++;
                 try {
                     testFunc();
-                    std::cout << name << greenColor << " PASSED" << endColor << "." << std::endl;
+                    std::println("{} {}PASSED{}.", name, greenColor, endColor);
                     successCount++;
                 } catch (std::exception& e) {
-                    std::cout << name << redColor << " FAILED" << endColor << "." << std::endl;
+                    std::println("{} {}FAILED{}.", name, redColor, endColor);
                 }
             }
         }
-        std::string properName = totalCount == 1 ? "test" : "tests";
-        std::cout << successCount << " of " << totalCount << " " << properName << " have passed" << std::endl;
+        std::println("{} of {} {} have passed", successCount, totalCount, totalCount == 1 ? "test" : "tests");
     }
 
 private:
