@@ -1,11 +1,10 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <print>
 
 class UserHistory {
 public:
-    explicit UserHistory(std::string filename);
+    explicit UserHistory(const std::string& filename);
     void loadHistory();
     void saveHistory();
     void resetUser(const std::string& name);

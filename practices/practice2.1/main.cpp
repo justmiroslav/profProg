@@ -1,8 +1,10 @@
 #include "include/UserHistory.hpp"
+#include <print>
 
 namespace {
     constexpr std::string_view RESET_ALL_COMMAND = "bread";
     constexpr std::string_view DELETE_COMMAND = "delete";
+    constexpr std::string_view HISTORY_FILE = "data/history.txt";
 }
 
 int main(int argc, char* argv[]) {
@@ -18,7 +20,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    UserHistory userHistory("data/history.txt");
+    UserHistory userHistory(HISTORY_FILE.data());
     userHistory.loadHistory();
     std::string name = argv[1];
 
@@ -31,7 +33,7 @@ int main(int argc, char* argv[]) {
         if (count == 1) {
             std::println("Welcome, {}!", name);
         } else {
-            std::println("Hello again(x{}), {}", count - 1, name);
+            std::println("Hello again(x{}), {}", count, name);
         }
     }
 

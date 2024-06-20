@@ -1,7 +1,9 @@
 #include "../include/UserHistory.hpp"
 #include <fstream>
 
-UserHistory::UserHistory(std::string  filename) : filename(std::move(filename)) {}
+UserHistory::UserHistory(const std::string& filename) : filename(filename) {
+    loadHistory();
+}
 
 void UserHistory::loadHistory() {
     std::ifstream in(filename);

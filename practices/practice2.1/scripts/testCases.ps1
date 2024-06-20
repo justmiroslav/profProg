@@ -8,7 +8,7 @@ $testCases = @(
     },
     @{
         'input' = @("justmiroslav")
-        'expectedOutput' = "Hello again(x1), justmiroslav"
+        'expectedOutput' = "Hello again(x2), justmiroslav"
     },
     @{
         'input' = @("justmiroslav", "delete")
