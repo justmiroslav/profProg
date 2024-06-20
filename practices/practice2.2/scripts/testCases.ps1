@@ -4,7 +4,7 @@ $executable = "./program.exe"
 $testCases = @(
     @{
         'input' = @("data/image.txt", "blue")
-        'expectedOutput' = "Usage: ./program.exe <input_filename> <output_filename> <color_name>"
+        'expectedOutput' = "Usage: <output_file> <input_filename> <output_filename> <color_name>"
     },
     @{
         'input' = @("data/image.txt", "data/output.txt", "nonExistentColor")

@@ -1,9 +1,7 @@
-#include "../include/ColorsMap.hpp"
-#include "../include/ImageProcessor.hpp"
+#include "ImageProcessor.hpp"
 #include <fstream>
-#include <print>
 #include <sstream>
-#include <algorithm>
+#include <ranges>
 
 bool Color::isValid() const {
     return r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255;
@@ -13,8 +11,7 @@ bool operator==(const Color& a, const Color& b) {
     return a.r == b.r && a.g == b.g && a.b == b.b;
 }
 
-ImageProcessor::ImageProcessor(const std::string& inputFilename, const std::string& outputFilename, const std::string& colorName)
-        : inputFilename(inputFilename), outputFilename(outputFilename), colorName(colorName) {
+ImageProcessor::ImageProcessor(const std::string& inputFilename) : inputFilename(inputFilename) {
     readImage();
 }
 
@@ -22,8 +19,7 @@ void ImageProcessor::readImage() {
     std::ifstream fileStream(inputFilename);
 
     if (!fileStream.is_open()) {
-        std::println("Error opening file {}", inputFilename);
-        exit(1);
+        throw std::runtime_error("Error opening file " + inputFilename);
     }
 
     image.reserve(NUM_ROWS_OR_NUM_PIXELS_PER_ROW);
@@ -31,8 +27,10 @@ void ImageProcessor::readImage() {
     int r_count = 0;
 
     while (std::getline(fileStream, line)) {
-        std::vector<Color> row;
+        image.emplace_back();
+        auto& row = image.back();
         row.reserve(NUM_ROWS_OR_NUM_PIXELS_PER_ROW);
+
         std::stringstream ss(line);
         std::string pixel;
         int p_count = 0;
@@ -43,32 +41,27 @@ void ImageProcessor::readImage() {
             char comma;
 
             if (!(ps >> p.r >> comma >> p.g >> comma >> p.b) || !p.isValid()) {
-                std::println("Invalid pixel in line {}", r_count);
-                exit(1);
+                throw std::runtime_error("Invalid pixel in line " + std::to_string(r_count));
             }
 
             row.push_back(p);
             p_count++;
         }
         if (p_count != NUM_ROWS_OR_NUM_PIXELS_PER_ROW) {
-            std::println("Invalid amount of pixels in line {}", r_count);
-            exit(1);
+            throw std::runtime_error("Invalid amount of pixels in line " + std::to_string(r_count));
         }
-        image.push_back(row);
+
         r_count++;
     }
 
     if (r_count != NUM_ROWS_OR_NUM_PIXELS_PER_ROW) {
-        std::println("Invalid amount of lines in file");
-        exit(1);
+        throw std::runtime_error("Invalid amount of lines in file");
     }
 
     fileStream.close();
 }
 
-void ImageProcessor::processImage() {
-    Color favoriteColor = reinterpret_cast<Color &&>(colorsRgb[colorName]);
-
+void ImageProcessor::processImage(const Color& favoriteColor) {
     for (size_t row = 0; row < image.size(); ++row) {
         for (size_t col = 0; col < image[row].size(); ++col) {
             if (image[row][col] == favoriteColor) {
@@ -79,15 +72,15 @@ void ImageProcessor::processImage() {
     }
 }
 
-void ImageProcessor::writeImage() {
+void ImageProcessor::writeImage(const std::string& outputFilename) {
     std::ofstream file(outputFilename);
 
     for (const auto & row : image) {
-        std::ranges::for_each(row, [&file](const Color& pixel) {
-            file << pixel.r << "," << pixel.g << "," << pixel.b << " ";
-        });
-        file << std::endl;
-    }
+        auto row_string = row | std::views::transform([](const Color& pixel) {
+            return std::format("{},{},{}", pixel.r, pixel.g, pixel.b);
+        }) | std::views::join_with(' ');
 
+        file << std::ranges::to<std::string>(row_string) << std::endl;
+    }
     file.close();
 }
