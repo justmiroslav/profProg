@@ -13,7 +13,7 @@ public class MathOperationsTest {
         List<Double> arguments = Arrays.asList(2.0, 3.0, 4.0);
         Object result = operations.calculate(arguments);
         assertTrue(result instanceof Double);
-        assertEquals(1 / (2.0 * 3.0 * 4.0), result);
+        assertEquals(0.041666666666666664, result);
     }
 
     @Test
@@ -21,7 +21,7 @@ public class MathOperationsTest {
         List<Double> arguments = Arrays.asList(0.0, 2.0, 1.0);
         Object result = operations.calculate(arguments);
         assertTrue(result instanceof Double);
-        assertEquals(1 / (0.0 + 2.0 + 1.0), result);
+        assertEquals(0.3333333333333333, result);
     }
 
     @Test
@@ -29,7 +29,7 @@ public class MathOperationsTest {
         List<Double> arguments = Arrays.asList(0.0, 4.0, -4.0);
         Object result = operations.calculate(arguments);
         assertTrue(result instanceof Double);
-        assertEquals(0.0 + (4.0 + 1) * (-4.0 - 1), result);
+        assertEquals(-25.0, result);
     }
 
     @Test
