@@ -49,19 +49,19 @@ std::map<std::string, std::tuple<int, int, int>> colorsRgb = {
 };
 
 int main(int argc, char* argv[]) {
+    if (argc != 4) {
+        std::println("Usage: <output_file> <input_filename> <output_filename> <color_name>");
+        return 1;
+    }
+    std::string colorName = argv[3];
+    if (colorsRgb.find(colorName) == colorsRgb.end()) {
+        std::println("Color not found");
+        return 1;
+    }
+
+    std::string inputFilename = argv[1];
+    std::string outputFilename = argv[2];
     try {
-        if (argc != 4) {
-            throw std::runtime_error("Usage: <output_file> <input_filename> <output_filename> <color_name>");
-        }
-
-        std::string colorName = argv[3];
-        if (colorsRgb.find(colorName) == colorsRgb.end()) {
-            throw std::runtime_error("Color not found");
-        }
-
-        std::string inputFilename = argv[1];
-        std::string outputFilename = argv[2];
-
         ImageProcessor imageProcessor(inputFilename);
         Color favoriteColor = reinterpret_cast<Color &&>(colorsRgb[colorName]);
 
