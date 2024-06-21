@@ -1,74 +1,89 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class ImageProcessor {
+    private static final int NUM_ROWS_OR_NUM_PIXELS_PER_ROW = 16;
+    private final String inputFilename;
+    private final String dir;
+    private final List<List<Color>> image;
 
-    public static boolean isValid(Color a, Color b) {
-        return a.equals(b);
+    public ImageProcessor(String inputFilename, String dir) {
+        this.inputFilename = inputFilename;
+        this.dir = dir;
+        this.image = new ArrayList<>();
+        readImage();
     }
 
-    public static List<List<Color>> readImage(String dir, String filename) throws IOException {
-        File file = new File(dir + filename);
-        if (!file.exists()) {
-            System.out.println("Error opening file " + filename);
-            System.exit(1);
-        }
-
-        List<List<Color>> image = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
-        int rCount = 0;
-
-        while ((line = br.readLine()) != null) {
-            List<Color> row = new ArrayList<>();
-            StringTokenizer st = new StringTokenizer(line, " ");
-            int pCount = 0;
-
-            while (st.hasMoreTokens()) {
-                String[] pixel = st.nextToken().split(",");
-                if (pixel.length != 3) {
-                    System.out.println("Invalid pixel in line " + rCount);
-                    System.exit(1);
+    private void readImage() {
+        try (Scanner scanner = new Scanner(new File(dir + inputFilename))) {
+            int r_count = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] pixels = line.split(" ");
+                if (pixels.length != NUM_ROWS_OR_NUM_PIXELS_PER_ROW) {
+                    throw new RuntimeException("Invalid amount of pixels in line " + r_count);
                 }
-                int r = Integer.parseInt(pixel[0]);
-                int g = Integer.parseInt(pixel[1]);
-                int b = Integer.parseInt(pixel[2]);
-                if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-                    System.out.println("Invalid pixel in line " + rCount);
-                    System.exit(1);
-                }
-                row.add(new Color(r, g, b));
-                pCount++;
+
+                List<Color> row = getColors(pixels, r_count);
+                image.add(row);
+                r_count++;
             }
-            if (pCount != 16) {
-                System.out.println("Invalid amount of pixels in line " + rCount);
-                System.exit(1);
+            if (r_count != NUM_ROWS_OR_NUM_PIXELS_PER_ROW) {
+                throw new RuntimeException("Invalid amount of lines in file");
             }
-            image.add(row);
-            rCount++;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("Error opening file " + inputFilename);
         }
-        if (rCount != 16) {
-            System.out.println("Invalid amount of lines in file");
-            System.exit(1);
-        }
-        return image;
     }
 
-    public static void writeImage(String dir, String filename, List<List<Color>> image) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(dir + filename));
+    private static List<Color> getColors(String[] pixels, int r_count) {
+        List<Color> row = new ArrayList<>();
+        for (String pixel : pixels) {
+            String[] rgb = pixel.split(",");
+            if (rgb.length != 3) {
+                throw new RuntimeException("Invalid pixel in line " + r_count);
+            }
+            try {
+                Color color = new Color(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
+                if (!color.isValid()) {
+                    throw new RuntimeException("Invalid pixel in line " + r_count);
+                }
+                row.add(color);
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Invalid pixel in line " + r_count);
+            }
+        }
+        return row;
+    }
 
+    public void processImage(Color favoriteColor, Color unfavoriteColor) {
+        for (int row = 0; row < image.size(); row++) {
+            for (int col = 0; col < image.get(row).size(); col++) {
+                Color currentColor = image.get(row).get(col);
+                if (currentColor.equals(favoriteColor)) {
+                    if (row > 0) image.get(row - 1).set(col, favoriteColor);
+                    if (col > 0) image.get(row).set(col - 1, favoriteColor);
+                } else if (unfavoriteColor != null && currentColor.equals(unfavoriteColor)) {
+                    image.get(row).set(col, favoriteColor);
+                }
+            }
+        }
+    }
+
+    public void writeImage(String outputFilename) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(dir + outputFilename));
+        
         for (List<Color> row : image) {
-            for (int j = 0; j < row.size(); j++) {
-                Color color = row.get(j);
-                bw.write(color.r + "," + color.g + "," + color.b);
-                if (j != row.size() - 1) {
-                    bw.write(" ");
-                }
+            List<String> colorStrings = new ArrayList<>();
+            for (Color color : row) {
+                colorStrings.add(color.r + "," + color.g + "," + color.b);
             }
+            bw.write(String.join(" ", colorStrings));
             bw.newLine();
         }
+        
         bw.close();
     }
 }

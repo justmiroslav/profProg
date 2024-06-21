@@ -36,6 +36,10 @@ $testCases = @(
     @{
         'input' = @("image.txt", "output.txt", "blue")
         'expectedOutput' = "Favorite color has been successfully expanded"
+    },
+    @{
+        'input' = @("image.txt", "output.txt", "blue", "red")
+        'expectedOutput' = "Favorite color has been successfully expanded and unfavorite color has been successfully replaced"
     }
 )
 

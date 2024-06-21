@@ -1,10 +1,10 @@
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class Main {
+    private static final String dir = "C:/Users/miros/IdeaProjects/profProg/homeworks/homework2.2/data/";
+
     public static void main(String[] args) throws IOException {
-        String dir = "C:/Users/miros/IdeaProjects/profProg/homeworks/homework2.2/data/";
         if (args.length < 3 || args.length > 4) {
             System.out.println("Usage: java Main <input_filename> <output_filename> <favorite_color> [<unfavorite_color>]");
             System.exit(1);
@@ -30,22 +30,14 @@ public class Main {
             System.exit(1);
         }
 
-        List<List<Color>> image = ImageProcessor.readImage(dir, inputFilename);
-
-        for (int i = 0; i < image.size(); i++) {
-            for (int j = 0; j < image.get(i).size(); j++) {
-                Color currentColor = image.get(i).get(j);
-                if (ImageProcessor.isValid(currentColor, unfavoriteColor)) {
-                    image.get(i).set(j, favoriteColor);
-                }
-                if (ImageProcessor.isValid(currentColor, favoriteColor)) {
-                    if (i > 0) image.get(i - 1).set(j, favoriteColor);
-                    if (j > 0) image.get(i).set(j - 1, favoriteColor);
-                }
-            }
+        try {
+            ImageProcessor imageProcessor = new ImageProcessor(inputFilename, dir);
+            imageProcessor.processImage(favoriteColor, unfavoriteColor);
+            imageProcessor.writeImage(outputFilename);
+            System.out.println("Favorite color has been successfully expanded" + (unfavoriteColor != null ? " and unfavorite color has been successfully replaced" : ""));
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
-
-        ImageProcessor.writeImage(dir, outputFilename, image);
-        System.out.println("Favorite color has been successfully expanded");
     }
 }
