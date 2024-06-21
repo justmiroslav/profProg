@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Optional;
+
 public class Main {
     public static void main(String[] args) {
         if (args.length < 3 || args.length > 4) {
@@ -18,8 +20,8 @@ public class Main {
                 System.exit(0);
             } else {
                 String side = args[3];
-                double height = triangle.getHeight(side);
-                if (height == 0) {
+                Optional<Double> height = triangle.getHeight(side);
+                if (height.isEmpty()) {
                     System.out.println("Invalid side for height calculation.");
                     System.exit(1);
                 }
