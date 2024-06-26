@@ -6,8 +6,8 @@ MegaData::MegaData() {
 }
 
 void MegaData::reset() {
-    std::ranges::fill(smallArray, 42.0f);
-    std::ranges::fill(bigArray, 42.0);
+    std::ranges::fill(smallArray, DEFAULT_VALUE);
+    std::ranges::fill(bigArray, DEFAULT_VALUE);
 }
 
 double* MegaData::getBigArray() {

@@ -1,21 +1,22 @@
 #include "MegaDataPool.hpp"
 #include <algorithm>
+#include <sstream>
 
 MegaDataPool::MegaDataPool(size_t size) : dataPool(size), isDataUsed(size, false) {}
 
-MegaData* MegaDataPool::acquire() {
+MegaData& MegaDataPool::acquire() {
     for (size_t i = 0; i < dataPool.size(); ++i) {
         if (!isDataUsed[i]) {
             isDataUsed[i] = true;
-            return &dataPool[i];
+            return dataPool[i];
         }
     }
-    return nullptr;
+    throw std::runtime_error("No available data objects in the pool");
 }
 
-void MegaDataPool::release(MegaData* obj) {
+void MegaDataPool::release(MegaData& obj) {
     for (size_t i = 0; i < dataPool.size(); ++i) {
-        if (&dataPool[i] == obj) {
+        if (&dataPool[i] == &obj) {
             isDataUsed[i] = false;
             return;
         }

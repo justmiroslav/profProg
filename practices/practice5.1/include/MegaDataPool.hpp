@@ -4,11 +4,11 @@
 
 class MegaDataPool {
 public:
-    MegaDataPool(size_t size);
-    MegaData* acquire();
-    void release(MegaData* obj);
-    size_t getSize() const;
-    size_t getUsedCount() const;
+    explicit MegaDataPool(size_t size);
+    [[nodiscard]] MegaData& acquire();
+    void release(MegaData& obj);
+    [[nodiscard]] size_t getSize() const;
+    [[nodiscard]] size_t getUsedCount() const;
 
 private:
     std::vector<MegaData> dataPool;
