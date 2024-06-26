@@ -8,21 +8,21 @@ MegaDataPool& MegaDataPool::getInstance(size_t size) {
     return instance;
 }
 
-MegaData* MegaDataPool::acquire() {
+MegaData& MegaDataPool::acquire() {
     std::lock_guard<std::mutex> lock(poolMutex);
     for (size_t i = 0; i < dataPool.size(); ++i) {
         if (!isDataUsed[i]) {
             isDataUsed[i] = true;
-            return &dataPool[i];
+            return dataPool[i];
         }
     }
-    return nullptr;
+    throw std::runtime_error("No available data objects in the pool");
 }
 
-void MegaDataPool::release(MegaData* obj) {
+void MegaDataPool::release(MegaData& obj) {
     std::lock_guard<std::mutex> lock(poolMutex);
     for (size_t i = 0; i < dataPool.size(); ++i) {
-        if (&dataPool[i] == obj) {
+        if (&dataPool[i] == &obj) {
             isDataUsed[i] = false;
             return;
         }
