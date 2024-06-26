@@ -1,7 +1,7 @@
 #include "../include/PizzaDirector.hpp"
 
-PizzaDirector::PizzaDirector(PizzaBuilder* builder) : pizzaBuilder(builder) {}
+PizzaDirector::PizzaDirector(std::unique_ptr<PizzaBuilder>& builder) : pizzaBuilder(builder) {}
 
-Pizza* PizzaDirector::makePizza() {
+std::unique_ptr<Pizza> PizzaDirector::makePizza() {
     return pizzaBuilder->getPizza();
 }

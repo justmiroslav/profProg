@@ -3,9 +3,9 @@
 
 class PizzaDirector {
 public:
-    explicit PizzaDirector(PizzaBuilder* builder);
-    Pizza* makePizza();
+    explicit PizzaDirector(std::unique_ptr<PizzaBuilder>& builder);
+    std::unique_ptr<Pizza> makePizza();
 
 private:
-    PizzaBuilder* pizzaBuilder;
+    std::unique_ptr<PizzaBuilder>& pizzaBuilder;
 };

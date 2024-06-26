@@ -13,4 +13,6 @@ public:
 
 private:
     std::map<std::string, std::tuple<double, bool, int>> ingredients;
+    static constexpr auto COUNT_IDX = 2;
+    static constexpr auto PRICE_IDX = 0;
 };

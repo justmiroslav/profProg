@@ -12,11 +12,11 @@ void ConcretePizzaBuilderTest(UnitTests& testSuite) {
         };
 
         // Operate:
-        ConcretePizzaBuilder builder(ingredients);
-        builder.addIngredient("Ham", 2);
+        std::unique_ptr<PizzaBuilder> builder = std::make_unique<ConcretePizzaBuilder>(ingredients);
+        builder->addIngredient("Pepperoni", 2);
 
         // Check:
-        ASSERT_EQ(builder.getPizza()->getIngredientCount("Ham"), 2)
+        ASSERT_EQ(builder->getPizza()->getIngredientCount("Pepperoni"), 2)
     });
 
     testSuite.addTest("ConcretePizzaBuilderRemoveIngredient",
@@ -29,11 +29,11 @@ void ConcretePizzaBuilderTest(UnitTests& testSuite) {
         };
 
         // Operate:
-        ConcretePizzaBuilder builder(ingredients);
-        builder.addIngredient("Olives", 2);
-        builder.removeIngredient("Olives", 1);
+        std::unique_ptr<PizzaBuilder> builder = std::make_unique<ConcretePizzaBuilder>(ingredients);
+        builder->addIngredient("Olives", 2);
+        builder->removeIngredient("Olives", 1);
 
         // Check:
-        ASSERT_EQ(builder.getPizza()->getIngredientCount("Olives"), 1)
+        ASSERT_EQ(builder->getPizza()->getIngredientCount("Olives"), 1)
     });
 }

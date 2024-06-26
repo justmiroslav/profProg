@@ -8,8 +8,8 @@ public:
 
 private:
     void loadIngredients();
-    void handleAddCommand(PizzaBuilder* builder);
-    void handleRemoveCommand(PizzaBuilder* builder);
+    void handleAddCommand(std::unique_ptr<PizzaBuilder>& builder);
+    void handleRemoveCommand(std::unique_ptr<PizzaBuilder>& builder);
 
     std::map<std::string, std::pair<double, bool>> ingredients;
     std::map<std::string, int> addedCounts;

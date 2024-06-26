@@ -13,12 +13,13 @@ void PizzaDirectorTest(UnitTests& testSuite) {
         };
 
         // Operate:
-        PizzaBuilder* builder = new ConcretePizzaBuilder(ingredients);
+        std::unique_ptr<PizzaBuilder> builder = std::make_unique<ConcretePizzaBuilder>(ingredients);
         PizzaDirector director(builder);
         builder->addIngredient("Pepperoni", 2);
+        std::unique_ptr<Pizza> pizza = director.makePizza();
 
         // Check:
-        ASSERT_EQ(director.makePizza()->getIngredientCount("Cheese"), 1)
-        ASSERT_EQ(director.makePizza()->getIngredientCount("Pepperoni"), 2)
+        ASSERT_EQ(pizza->getIngredientCount("Cheese"), 1)
+        ASSERT_EQ(pizza->getIngredientCount("Pepperoni"), 2)
     });
 }
