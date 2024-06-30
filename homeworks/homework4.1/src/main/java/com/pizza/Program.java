@@ -8,6 +8,8 @@ public class Program {
     private final Map<String, Ingredient> ingredients = new HashMap<>();
     private final Map<String, Integer> addedCounts = new HashMap<>();
     private static final String INGREDIENTS_FILE = "data/ing.txt";
+    private static final String DEFAULT_COMMAND = "default";
+    private static final String CUSTOM_COMMAND = "custom";
 
     public void run() {
         loadIngredients();
@@ -18,11 +20,11 @@ public class Program {
         Pizza pizza;
         String pizzaName = null;
 
-        if (choice.equals("default")) {
+        if (choice.equals(DEFAULT_COMMAND)) {
             pizzaName = chooseDefaultPizza(scanner);
             if (pizzaName == null) return;
             pizza = loadDefaultPizza(pizzaName);
-        } else if (choice.equals("custom")) {
+        } else if (choice.equals(CUSTOM_COMMAND)) {
             pizza = createCustomPizza(scanner);
         } else {
             System.out.println("Invalid choice");
@@ -96,11 +98,11 @@ public class Program {
 
         while (true) {
             System.out.println("Enter the command: (1-add, 2-remove, 3-done)");
-            int command = Integer.parseInt(scanner.nextLine().trim());
+            Command command = Command.fromInt(Integer.parseInt(scanner.nextLine().trim()));
 
-            if (command == 3) break;
-            else if (command == 1) handleAddCommand(scanner, builder);
-            else if (command == 2) handleRemoveCommand(scanner, builder);
+            if (command == Command.ADD) handleAddCommand(scanner, builder);
+            else if (command == Command.REMOVE) handleRemoveCommand(scanner, builder);
+            else if (command == Command.DONE) break;
             else System.out.println("Invalid command");
         }
 
