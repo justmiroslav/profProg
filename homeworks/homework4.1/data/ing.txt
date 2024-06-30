@@ -1,0 +1,16 @@
+Pizza Base,3.00,true
+Tomato Sauce,1.00,true
+Mozzarella Cheese,2.00,true
+Parmesan Cheese,1.25,false
+Cheddar Cheese,1.25,false
+Pepperoni,1.50,false
+Bacon,1.50,false
+Ham,1.50,false
+Pineapple,1.00,false
+Spinach,0.75,false
+Mushrooms,1.00,false
+Green Peppers,0.75,false
+Olives,1.00,false
+Onions,0.75,false
+Basil,0.50,false
+Tomatoes,0.75,false
