@@ -1,6 +1,5 @@
 #include "MessageDispatcher.hpp"
 #include <print>
-#include <thread>
 #include <random>
 
 void messageGenerator(MessageDispatcher& dispatcher) {
