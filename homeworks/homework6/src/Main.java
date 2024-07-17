@@ -48,5 +48,10 @@ public class Main {
 
         t3.start();
         t4.start();
+
+        t3.join();
+        t4.join();
+
+        dispatcher.shutdown();
     }
 }
