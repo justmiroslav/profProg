@@ -1,0 +1,7 @@
+Example scenario for the adapter template:
+
+RapidTransit employees currently maintain manual passenger and ticket records by manually entering
+information into text files. If an adapter is used for my solution, it can be applied to migrate
+existing records into the database for speed and compatibility in my project. The Adapter will read
+the text file records and convert them into a format that can be stored in the database used by
+the new ticket management system.
